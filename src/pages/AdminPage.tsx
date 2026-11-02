@@ -57,6 +57,7 @@ const emptyForm = (): FormState => ({
 export default function AdminPage({ pois, onChange, onAdminSessionChange, onExit }: AdminPageProps) {
   const [unlocked, setUnlocked] = useState(false);
   const [loadingAdmin, setLoadingAdmin] = useState(true);
+  const [adminTab, setAdminTab] = useState<'map' | 'settings'>('map');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
@@ -424,7 +425,7 @@ export default function AdminPage({ pois, onChange, onAdminSessionChange, onExit
   })();
 
   return (
-    <div className="h-full overflow-y-auto bg-void pb-8 pt-[env(safe-area-inset-top)]">
+    <div className="flex h-full flex-col overflow-hidden bg-void pt-[env(safe-area-inset-top)]">
       <header className="sticky top-0 z-[1500] flex items-center justify-between border-b border-neon/40 bg-black/95 px-3 py-2">
         <span className="holo-text tracking-[0.25em]">ADMINISTRATION</span>
         <div className="flex gap-2">
@@ -433,12 +434,82 @@ export default function AdminPage({ pois, onChange, onAdminSessionChange, onExit
         </div>
       </header>
 
-      <div className="space-y-4 p-3 text-xs">
-        {message && (
-          <p role={message.ok ? 'status' : 'alert'} className={`border p-2 ${message.ok ? 'border-radar/40 text-radar' : 'border-alert/50 text-alert'}`}>
-            {message.ok ? '✔' : '⚠'} {message.text}
-          </p>
+      <nav className="grid shrink-0 grid-cols-2 border-b border-neon/30 bg-black/80" role="tablist" aria-label="Écrans d’administration">
+        <button
+          id="admin-map-tab"
+          type="button"
+          role="tab"
+          aria-selected={adminTab === 'map'}
+          aria-controls="admin-map-panel"
+          className={`border-b-2 px-3 py-3 text-xs tracking-[0.2em] transition ${adminTab === 'map' ? 'border-radar text-radar shadow-[inset_0_-10px_18px_-16px_rgba(0,255,153,0.9)]' : 'border-transparent text-neon/50'}`}
+          onClick={() => setAdminTab('map')}
+        >
+          ⌖ CARTE
+        </button>
+        <button
+          id="admin-settings-tab"
+          type="button"
+          role="tab"
+          aria-selected={adminTab === 'settings'}
+          aria-controls="admin-settings-panel"
+          className={`border-b-2 px-3 py-3 text-xs tracking-[0.2em] transition ${adminTab === 'settings' ? 'border-radar text-radar shadow-[inset_0_-10px_18px_-16px_rgba(0,255,153,0.9)]' : 'border-transparent text-neon/50'}`}
+          onClick={() => setAdminTab('settings')}
+        >
+          ⚙ PARAMÈTRES
+        </button>
+      </nav>
+
+      {message && (
+        <p role={message.ok ? 'status' : 'alert'} className={`mx-3 mt-2 shrink-0 border p-2 text-xs ${message.ok ? 'border-radar/40 text-radar' : 'border-alert/50 text-alert'}`}>
+          {message.ok ? '✔' : '⚠'} {message.text}
+        </p>
+      )}
+
+      <main
+        id="admin-map-panel"
+        role="tabpanel"
+        aria-labelledby="admin-map-tab"
+        className={`relative min-h-0 flex-1 ${adminTab !== 'map' ? 'hidden' : ''}`}
+      >
+        {adminTab === 'map' && (
+          <>
+          <MapScreen
+            position={null}
+            pois={previewPois}
+            highlightId={form.id ?? '__draft__'}
+            showPoiRadius
+            fitToPois
+            onSelectPoi={(poi) => poi.id !== '__draft__' && edit(poi)}
+            onMapClick={(latitude, longitude) =>
+              setForm((current) => ({
+                ...current,
+                latitude: latitude.toFixed(6),
+                longitude: longitude.toFixed(6),
+              }))
+            }
+          />
+          <div className="pointer-events-none absolute left-3 top-3 z-[800] max-w-[calc(100%-1.5rem)] border border-neon/40 bg-black/85 px-3 py-2 text-xs shadow-neon">
+            <p className="tracking-widest text-radar">{selectedGame ? selectedGame.name : 'PARCOURS MODÈLE'}</p>
+            <p className="mt-1 text-neon/70">{pois.length} point(s) d’intérêt · Rayon d’activation affiché</p>
+          </div>
+          <div className="absolute inset-x-3 bottom-3 z-[800] flex items-center justify-between gap-2 border border-neon/40 bg-black/90 p-2 text-xs shadow-neon">
+            <span className="min-w-0 text-neon/75">
+              {form.id ? `Modification · ${form.name || 'POI sans nom'}` : 'Touchez la carte pour placer un point'}
+            </span>
+            <button type="button" className="btn-neon shrink-0 !px-2 !py-1" onClick={() => setAdminTab('settings')}>
+              RÉGLAGES POI →
+            </button>
+          </div>
+          </>
         )}
+      </main>
+      <main
+        id="admin-settings-panel"
+        role="tabpanel"
+        aria-labelledby="admin-settings-tab"
+        className={`${adminTab !== 'settings' ? 'hidden' : 'min-h-0 flex-1 overflow-y-auto overscroll-contain pb-8'}`}
+      >
+      <div className="space-y-4 p-3 text-xs">
         <section className="panel space-y-3 p-3">
           <h2 className="tracking-widest text-radar">PARTIES · GESTION ADMIN</h2>
           <form onSubmit={(event) => void createGame(event)} className="flex flex-col gap-2 sm:flex-row">
@@ -550,21 +621,6 @@ export default function AdminPage({ pois, onChange, onAdminSessionChange, onExit
           <p className="text-neon/55">{selectedGame ? `Les modifications suivantes seront enregistrées dans « ${selectedGame.name} ».` : 'Les POI courants serviront de modèle à la prochaine partie créée.'}</p>
         </section>
 
-        <div className="relative h-64 border border-neon/40">
-          <MapScreen
-            position={null}
-            pois={previewPois}
-            highlightId={form.id ?? '__draft__'}
-            showPoiRadius
-            fitToPois
-            onSelectPoi={(p) => p.id !== '__draft__' && edit(p)}
-            onMapClick={(lat, lon) => setForm((f) => ({ ...f, latitude: lat.toFixed(6), longitude: lon.toFixed(6) }))}
-          />
-          <div className="pointer-events-none absolute bottom-1 left-1 z-[800] bg-black/70 px-1 text-[10px] text-radar">
-            Touchez la carte pour positionner le POI
-          </div>
-        </div>
-
         <form onSubmit={submit} className="panel space-y-2 p-3">
           <div className="tracking-widest text-radar">{form.id ? 'MODIFIER LE POI' : 'AJOUTER UN POI'}</div>
           <input className="field" placeholder="Nom" value={form.name} onChange={(e) => set('name', e.target.value)} />
@@ -621,6 +677,7 @@ export default function AdminPage({ pois, onChange, onAdminSessionChange, onExit
           RESTAURER LES POI DE DÉMO
         </button>
       </div>
+      </main>
     </div>
   );
 }

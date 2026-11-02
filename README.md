@@ -62,7 +62,7 @@ Chaque navigateur/appareil connecté à un compte anonyme distinct représente u
 
 ## Console d’administration
 
-La console est accessible par l’URL `/admin` et ne comporte aucun bouton dans l’interface de jeu. L’accès est authentifié par Supabase et le rôle admin est contrôlé côté base ; l’URL seule ne donne aucun droit. La session admin utilise un stockage séparé de la session joueur sur le même navigateur.
+La console est accessible par l’URL `/admin` et ne comporte aucun bouton dans l’interface de jeu. Elle propose un onglet **Carte** en plein écran pour visualiser et positionner les POI, et un onglet **Paramètres** pour gérer les parties, équipes, joueurs, communications et détails du parcours. Touchez la carte pour renseigner les coordonnées d’un POI, puis ouvrez les paramètres pour compléter et enregistrer sa fiche. L’accès est authentifié par Supabase et le rôle admin est contrôlé côté base ; l’URL seule ne donne aucun droit. La session admin utilise un stockage séparé de la session joueur sur le même navigateur.
 
 La console permet de créer une partie (en copiant les POI affichés dans l’éditeur), de sélectionner un parcours pour le modifier, de consulter les équipes et joueurs, d’attribuer ou retirer des objets bonus/malus, et d’envoyer un message à toute la partie ou à une équipe. Les communications sont conservées et chaque joueur doit les acquitter ; les bonus/malus attribués sont affichés dans son panneau d’équipe.
 

@@ -1,0 +1,76 @@
+[
+  {
+    "id": "poi-chateau",
+    "name": "Château",
+    "latitude": 47.216211,
+    "longitude": -1.549358,
+    "riddle": ". -.-. --- ..- - . --..",
+    "icon": "/icons/target.svg",
+    "audio": "/audio/Chateau.wav",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-saint-nicolas",
+    "name": "Porte Saint Nicolas",
+    "latitude": 47.21449390443698,
+    "longitude": -1.5583370795036156,
+    "riddle": "Aux portes du mausolée observé par la Sèvre",
+    "icon": "/icons/target.svg",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-sauvetout",
+    "name": "Porte Sauvetout",
+    "latitude": 47.216775817441835,
+    "longitude": -1.5578748707899726,
+  "riddle": "Aux pieds de la tour à plomb de Nantes",
+    "icon": "/icons/target.svg",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-saint-pierre",
+    "name": "Porte Saint-Pierre",
+    "latitude": 47.21889351476121,
+    "longitude": -1.5503070632825027,
+    "riddle": "Là où résonne l’ouvrage des bâtisseurs, cherche le portail ; au-delà viendra le refuge, puis la muraille oubliée des anciens. Je perçus au pieds de cette muraille les premières perturbation du temps",
+    "icon": "/icons/target.svg",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-tour-murier",
+    "name": "Tour du murier",
+    "latitude": 47.217942875174984,
+    "longitude": -1.5493942158030336,
+    "riddle": "Quand la fonte ne suffit plus à retenir celles qui rêvent de liberté",
+    "icon": "/icons/target.svg",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-communeau",
+    "name": "Tour du Moulin Harnois",
+    "latitude": 47.219811777674906,
+    "longitude": -1.5545076035940548,
+    "riddle": "SEAL",
+    "icon": "/icons/target.svg",
+    "audio": "/audio/Communeau.mp3",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-bouffay",
+    "name": "Chapelle du Bouffay",
+    "latitude": 47.215342,
+    "longitude": -1.55423,
+    "riddle": "Une anomalie spatio-temporelle c’est glissé dans le jardin d’Eden.",
+    "icon": "/icons/target.svg",
+    "activationRadius": 50
+  },
+  {
+    "id": "poi-old-chateau",
+    "name": "Cour du chateau",
+    "latitude": 47.214742,
+    "longitude": -1.553224,
+    "riddle": "Au pied de la Tour du Bouffay",
+    "icon": "/icons/target.svg",
+    "activationRadius": 50
+  }
+]
